@@ -30,14 +30,19 @@
       <main>
         <div class="current-weather">
           <div>
+            <p class="current-date" id="current-date"></p>
             <h1 class="current-city" id="current-city">Paris</h1>
-            <p class="current-details">
-              <span id="current-date"></span>, moderate rain <br />
-              Humidity: <strong>87%</strong>, Wind: <strong>7.2km/h</strong>
-            </p>
+
+<p class="current-details">
+  Humidity: <strong id="humidity"></strong>, Wind: <strong id="wind-speed"></strong>, </p>
+ <p class="weather-condition">Condition: <strong id="weather-condition"></strong> </p>
+
+
+
           </div>
           <div class="current-temperature">
-            <span class="current-temperature-icon">☀️</span
+            <span class="current-temperature-icon"><img src="" alt="Weather Icon" id="weather-icon" class="weather-icon">
+</span
             ><span class="current-temperature-value" id="current-temperature"
               >24</span
             ><span class="current-temperature-unit">°C</span>
@@ -53,6 +58,7 @@
         </p>
       </footer>
     </div>
+
   </body>
-  <script src="src/index.js"></script>
+      <script src="src/index.js"></script>
 </html>
