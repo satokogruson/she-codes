@@ -103,8 +103,58 @@ document.addEventListener('DOMContentLoaded', function () {
   currentDateElement.innerHTML = formatDate(currentDate);
 });
 
+
+function displayLocalTime(searchedCity) {
+  const apiKey = '10b545o25teaa28dd38fd076fc778f2c';
+  const coordinatesURL = `https://api.shecodes.io/weather/v1/current?q=${searchedCity}&key=${apiKey}`;
+
+    fetch(coordinatesURL)
+      .then(response => response.json())
+      .then(data => {
+        if (!data || !data.coord) throw new Error('No location found for the searched city');
+
+        const latitude = data.coord.lat;
+        const longitude = data.coord.lon;
+
+        const timezoneURL = 'http://worldtimeapi.org/api/timezone?format=json&lat=${latitude}&lng=${longitude}';
+
+          fetch(timezoneURL)
+            .then(response => response.json())
+            .then(data => {
+              if (data.length === 0) throw new Error('No timezone found for the searched city');
+
+              const searchedTimezone = data[0];
+              const timeURL =`http://worldtimeapi.org/api/timezone/${searchedTimezone}`;
+
+                fetch(timeURL)
+                  .then(response => response.json())
+                  .then(data => {
+                    const localTime = data.datetime;
+                    console.log(localTime); 
+                  })
+                  .catch(error => {
+                    console.error('Error:', error);
+                  });
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+}
+
+// Example usage:
+const searchedCity = 'Tokyo'; 
+displayLocalTime(searchedCity);
+
+
 function formatDate(timestamp) {
   let date = new Date(timestamp * 1000);
+  const timeZoneOffset = date.getTimezoneOffset();
+  date.setTime(date.getTime() + timeZoneOffset * 60 * 1000);
+
   let day = date.getDate();
   let month = date.getMonth();
   let year = date.getFullYear();
@@ -120,7 +170,9 @@ function formatDate(timestamp) {
     "July", "August", "September", "October", "November", "December"];
 
   return `${dayOfWeek}, ${monthNames[month]} ${day}, ${year} ${hours}:${minutes}`;
+
 }
+
 
 function formatShortDate(time) {
   let date = new Date(time * 1000);
