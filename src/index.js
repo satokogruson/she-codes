@@ -36,6 +36,7 @@ function displayWeather(response) {
   let windSpeedElement = document.querySelector("#wind-speed");
   let weatherConditionElement = document.querySelector("#weather-condition");
   let currentDateElement = document.querySelector("#current-date");
+  let date = new Date(response.data.time * 1000);
 
   cityElement.innerHTML = response.data.city;
   weatherIconElement.src = response.data.condition.icon_url;
@@ -43,7 +44,8 @@ function displayWeather(response) {
   humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
   windSpeedElement.innerHTML = `${response.data.wind.speed} km/h`;
   weatherConditionElement.innerHTML = response.data.condition.description;
-  currentDateElement.innerHTML = formatDate(response.data.time);
+  currentDateElement.innerHTML = formatDate(date);
+
 }
 function convertForecastToFahrenheit() {
   document.querySelectorAll(".weather-forecast-temperature-max, .weather-forecast-temperature-min").forEach((elem, index) => {
@@ -98,62 +100,13 @@ document.addEventListener('DOMContentLoaded', function () {
   let searchForm = document.querySelector("#search-form");
   searchForm.addEventListener("submit", search);
 
-  let currentDateElement = document.querySelector("#current-date");
-  let currentDate = new Date();
-  currentDateElement.innerHTML = formatDate(currentDate);
+  // let currentDateElement = document.querySelector("#current-date");
+
+  // currentDateElement.innerHTML = formatDate(date);
 });
 
 
-function displayLocalTime(searchedCity) {
-  const apiKey = '10b545o25teaa28dd38fd076fc778f2c';
-  const coordinatesURL = `https://api.shecodes.io/weather/v1/current?q=${searchedCity}&key=${apiKey}`;
-
-    fetch(coordinatesURL)
-      .then(response => response.json())
-      .then(data => {
-        if (!data || !data.coord) throw new Error('No location found for the searched city');
-
-        const latitude = data.coord.lat;
-        const longitude = data.coord.lon;
-
-        const timezoneURL = 'http://worldtimeapi.org/api/timezone?format=json&lat=${latitude}&lng=${longitude}';
-
-          fetch(timezoneURL)
-            .then(response => response.json())
-            .then(data => {
-              if (data.length === 0) throw new Error('No timezone found for the searched city');
-
-              const searchedTimezone = data[0];
-              const timeURL =`http://worldtimeapi.org/api/timezone/${searchedTimezone}`;
-
-                fetch(timeURL)
-                  .then(response => response.json())
-                  .then(data => {
-                    const localTime = data.datetime;
-                    console.log(localTime); 
-                  })
-                  .catch(error => {
-                    console.error('Error:', error);
-                  });
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-}
-
-// Example usage:
-const searchedCity = 'Tokyo'; 
-displayLocalTime(searchedCity);
-
-
-function formatDate(timestamp) {
-  let date = new Date(timestamp * 1000);
-  const timeZoneOffset = date.getTimezoneOffset();
-  date.setTime(date.getTime() + timeZoneOffset * 60 * 1000);
+function formatDate(date) {
 
   let day = date.getDate();
   let month = date.getMonth();
@@ -198,7 +151,7 @@ function displayForecast(response) {
   }));
 
   response.data.daily.forEach(function (day, index) {
-    if (index < 5) {
+    if (index > 0 && index < 6) {
       forecastHtml = forecastHtml +
         `<div class="container text-center">
               <div class="col">

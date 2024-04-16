@@ -8,10 +8,11 @@ a {
 }
 
 .weather-container {
-  /* background-image: url('/src/img/weather_app_BG.jpg');
-      background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat; */
+  background-image: cross-fade('/src/img/weather_app_BG.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f1faff;
   width: 40%;
   margin: 60px auto;
   padding: 30px;
@@ -152,8 +153,8 @@ main {
   background-color: #fbfeff;
   margin: 5px;
   padding: 10px 0;
-    border-radius: 20px;
-      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
 }
 
