@@ -1,27 +1,67 @@
-function displayWeather(response) {
-  console.log(response);
-  let temperatureElement = document.querySelector("#current-temperature");
-  console.log("Temperature element:", temperatureElement);
-  let weatherIconElement = document.querySelector("#weather-icon");
-  let temperature = Math.round(response.data.temperature.current);
-  let cityElement = document.querySelector("#current-city");
-  console.log("City element:", cityElement);
+function convertToCelsius() {
+  if (currentTemperatureCelsius !== null) {
+    let temperatureElement = document.querySelector("#current-temperature");
+    temperatureElement.innerHTML = `${currentTemperatureCelsius}`;
+    convertForecastToCelsius();
+    toggleButtons(true);
+  }
+}
 
+function convertToFahrenheit() {
+  let temperatureElement = document.querySelector("#current-temperature");
+  let temperature = parseInt(temperatureElement.innerHTML, 10);
+
+  let fahrenheit = Math.round((temperature * 9 / 5) + 32);
+  temperatureElement.innerHTML = `${fahrenheit}`;
+  convertForecastToFahrenheit();
+  toggleButtons(false);
+}
+
+function toggleButtons(isCelsius) {
+  let celsiusButton = document.querySelector("#convert-to-celsius");
+  let fahrenheitButton = document.querySelector("#convert-to-fahrenheit");
+  celsiusButton.disabled = isCelsius;
+  fahrenheitButton.disabled = !isCelsius;
+}
+
+function displayWeather(response) {
+  let temperatureElement = document.querySelector("#current-temperature");
+  currentTemperatureCelsius = Math.round(response.data.temperature.current);
+  temperatureElement.innerHTML = `${currentTemperatureCelsius}`;
+  toggleButtons(true);
+
+  let cityElement = document.querySelector("#current-city");
+  let weatherIconElement = document.querySelector("#weather-icon");
   let humidityElement = document.querySelector("#humidity");
   let windSpeedElement = document.querySelector("#wind-speed");
   let weatherConditionElement = document.querySelector("#weather-condition");
   let currentDateElement = document.querySelector("#current-date");
 
   cityElement.innerHTML = response.data.city;
-  temperatureElement.innerHTML = `${temperature}°C`;
   weatherIconElement.src = response.data.condition.icon_url;
   weatherIconElement.alt = response.data.condition.description;
   humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
   windSpeedElement.innerHTML = `${response.data.wind.speed} km/h`;
   weatherConditionElement.innerHTML = response.data.condition.description;
   currentDateElement.innerHTML = formatDate(response.data.time);
-  getForecast(response.data.city);
 }
+function convertForecastToFahrenheit() {
+  document.querySelectorAll(".weather-forecast-temperature-max, .weather-forecast-temperature-min").forEach((elem, index) => {
+    let isMax = elem.classList.contains("weather-forecast-temperature-max");
+    let tempCelsius = isMax ? forecastTemperaturesCelsius[Math.floor(index / 2)].max : forecastTemperaturesCelsius[Math.floor(index / 2)].min;
+    let tempFahrenheit = Math.round((tempCelsius * 9 / 5) + 32);
+    elem.innerHTML = `<strong>${tempFahrenheit}°</strong>`;
+  });
+}
+
+function convertForecastToCelsius() {
+  document.querySelectorAll(".weather-forecast-temperature-max, .weather-forecast-temperature-min").forEach((elem, index) => {
+    let isMax = elem.classList.contains("weather-forecast-temperature-max");
+    let tempCelsius = isMax ? forecastTemperaturesCelsius[Math.floor(index / 2)].max : forecastTemperaturesCelsius[Math.floor(index / 2)].min;
+    elem.innerHTML = `<strong>${tempCelsius}°</strong>`;
+  });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   let searchForm = document.querySelector("#search-form");
   searchForm.addEventListener("submit", search);
@@ -38,11 +78,20 @@ function loadDefaultCityWeather(defaultCity) {
 function search(event) {
   event.preventDefault();
   let searchInputElement = document.querySelector("#search-input");
-  let city = searchInputElement.value;
+  let city = searchInputElement.value.trim();
+  if (!city) {
+    console.log("No city entered");
+    return;
+  }
   let apiKey = "10b545o25teaa28dd38fd076fc778f2c";
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
 
-  axios(apiUrl).then(displayWeather);
+  axios.get(apiUrl).then(response => {
+    displayWeather(response);
+    getForecast(city);
+  }).catch(error => {
+    console.error("Failed to fetch weather data:", error);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -64,22 +113,17 @@ function formatDate(timestamp) {
   let daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   let dayOfWeek = daysOfWeek[date.getDay()];
 
-  if (minutes < 10) {
-    minutes = `0${minutes}`;
-  }
-  if (hours < 10) {
-    hours = `0${hours}`;
-  }
+  minutes = minutes < 10 ? `0${minutes}` : minutes;
+  hours = hours < 10 ? `0${hours}` : hours;
 
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"];
 
   return `${dayOfWeek}, ${monthNames[month]} ${day}, ${year} ${hours}:${minutes}`;
-
 }
 
-function formatShortDate (time) {
-  let date = new Date(time*1000);
+function formatShortDate(time) {
+  let date = new Date(time * 1000);
   let shortDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   return shortDays[date.getDay()];
 }
@@ -90,10 +134,16 @@ function getForecast(city) {
   axios(apiUrl).then(displayForecast);
 }
 
+
 function displayForecast(response) {
   console.log(response.data);
 
+
   let forecastHtml = "";
+  forecastTemperaturesCelsius = response.data.daily.map(day => ({
+    max: Math.round(day.temperature.maximum),
+    min: Math.round(day.temperature.minimum)
+  }));
 
   response.data.daily.forEach(function (day, index) {
     if (index < 5) {
@@ -102,7 +152,8 @@ function displayForecast(response) {
               <div class="col">
                 <div class="weather-forecast-date">${formatShortDate(day.time)}</div>
                 <img
-                  class="card-img"
+                  class="weather-icon"
+                  id="weather-icon"
                   srcset="
                  ${day.condition.icon_url}
                   "
@@ -122,6 +173,7 @@ function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
   forecastElement.innerHTML = forecastHtml;
 }
+
 
 loadDefaultCityWeather("Munich");
 getForecast("Munich");
