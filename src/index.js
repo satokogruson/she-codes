@@ -99,10 +99,6 @@ function search(event) {
 document.addEventListener('DOMContentLoaded', function () {
   let searchForm = document.querySelector("#search-form");
   searchForm.addEventListener("submit", search);
-
-  // let currentDateElement = document.querySelector("#current-date");
-
-  // currentDateElement.innerHTML = formatDate(date);
 });
 
 
@@ -126,7 +122,6 @@ function formatDate(date) {
 
 }
 
-
 function formatShortDate(time) {
   let date = new Date(time * 1000);
   let shortDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -142,7 +137,6 @@ function getForecast(city) {
 
 function displayForecast(response) {
   console.log(response.data);
-
 
   let forecastHtml = "";
   forecastTemperaturesCelsius = response.data.daily.map(day => ({
@@ -178,7 +172,6 @@ function displayForecast(response) {
   let forecastElement = document.querySelector("#forecast");
   forecastElement.innerHTML = forecastHtml;
 }
-
 
 loadDefaultCityWeather("Munich");
 getForecast("Munich");

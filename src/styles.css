@@ -1,18 +1,20 @@
-body {
+body  {
   font-family: "Roboto", sans-serif;
-  background-color: #cfe8f3;
+  background-color: #e8f6fc;
 }
 
-a {
-  color: #165e83;
+a{
+  color: rgb(250, 200, 0, 0.7);
+}
+p {
+  color: #cbeafa;
+}
+span {
+    color: #eaf5fa;
 }
 
-.weather-container {
-  background-image: cross-fade('/src/img/weather_app_BG.jpg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #f1faff;
+.weather-container  {
+background: linear-gradient(65.5deg, rgb(23, 205, 205) -15.1%, rgb(23, 25, 95) 71.5%);
   width: 40%;
   margin: 60px auto;
   padding: 30px;
@@ -49,9 +51,9 @@ header {
 #search-button {
   padding-left: 30px;
   padding-right: 30px;
-  background-color: #165e83;
-  color: white;
-  border-color: #165e83;
+  background-color: #fcc800;
+  color: rgb(32, 32, 32);
+  border-color: #fcc800;
   height: 50px;
 }
 
@@ -72,7 +74,7 @@ main {
 #convert-to-fahrenheit {
   background-color: transparent;
   border: none;
-  color: #333;
+  color: #eaf5fa;
   font-size: 20px;
   padding: 5px 10px 5px 10px;
   cursor: pointer;
@@ -90,7 +92,7 @@ main {
 
 #convert-to-celsius:disabled {
   font-weight: bold;
-  color: #165e83;
+  color: #c2fffc;
 }
 
 #convert-to-fahrenheit:not(:disabled) {
@@ -99,7 +101,7 @@ main {
 
 #convert-to-fahrenheit:disabled {
   font-weight: bold;
-  color: #165e83;
+  color: #c2fffc
 }
 
 .current-temperature {
@@ -127,7 +129,7 @@ main {
 
 .weather-condition,
 .current-details {
-  color: rgba(39, 33, 66, 0.4);
+  color: rgb(235, 245, 250,0.7);
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
