@@ -110,7 +110,14 @@ main {
 
 .card-img {
   padding: 10px;
-  width: 90px;
+  width: 80%;
+}
+
+.weather-forecast-temperature {
+  display:flex;
+  flex-direction: row;
+  justify-content:space-around;
+  padding:0 20%;
 }
 
 .weather-forecast-temperature-max,
