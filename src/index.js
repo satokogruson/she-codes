@@ -1,4 +1,4 @@
-function displayTemperature(response) {
+function displayWeather(response) {
   console.log(response);
   let temperatureElement = document.querySelector("#current-temperature");
   console.log("Temperature element:", temperatureElement);
@@ -20,19 +20,17 @@ function displayTemperature(response) {
   windSpeedElement.innerHTML = `${response.data.wind.speed} km/h`;
   weatherConditionElement.innerHTML = response.data.condition.description;
   currentDateElement.innerHTML = formatDate(response.data.time);
+  getForecast(response.data.city);
 }
 document.addEventListener('DOMContentLoaded', function () {
   let searchForm = document.querySelector("#search-form");
   searchForm.addEventListener("submit", search);
-
-  loadDefaultCityWeather("Munich");
-  displayForecast();
 });
 
 function loadDefaultCityWeather(defaultCity) {
   let apiKey = "10b545o25teaa28dd38fd076fc778f2c";
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${defaultCity}&key=${apiKey}&units=metric`;
-  axios.get(apiUrl).then(displayTemperature).catch(error => {
+  axios.get(apiUrl).then(displayWeather).catch(error => {
     console.error("Failed to fetch weather data:", error);
   });
 }
@@ -44,7 +42,7 @@ function search(event) {
   let apiKey = "10b545o25teaa28dd38fd076fc778f2c";
   let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${city}&key=${apiKey}&units=metric`;
 
-  axios.get(apiUrl).then(displayTemperature);
+  axios(apiUrl).then(displayWeather);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -81,7 +79,15 @@ function formatDate(timestamp) {
   return `${dayOfWeek}, ${monthNames[month]} ${day}, ${year} ${hours}:${minutes}`;
 }
 
-function displayForecast() {
+function getForecast(city){
+  let apiKey = "10b545o25teaa28dd38fd076fc778f2c";
+  let apiUrl = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}&units=metric`;
+  axios(apiUrl).then(displayForecast);
+}
+
+function displayForecast(response) {
+console.log(response);
+
   let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
   let forecastHtml = "";
 
@@ -108,3 +114,6 @@ function displayForecast() {
   let forecastElement = document.querySelector("#forecast");
   forecastElement.innerHTML = forecastHtml;
 }
+
+loadDefaultCityWeather("Munich");
+getForecast("Munich");
