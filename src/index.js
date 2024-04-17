@@ -68,6 +68,7 @@ function toggleButtons(isCelsius) {
 }
 
 
+
 function search(event) {
   event.preventDefault();
   let searchInputElement = document.querySelector("#search-input");
@@ -91,7 +92,12 @@ document.addEventListener('DOMContentLoaded', function () {
   let searchForm = document.querySelector("#search-form");
   searchForm.addEventListener("submit", search);
 });
-
+document.addEventListener('DOMContentLoaded', function () {
+  var fahrenheitButton = document.getElementById('convert-to-fahrenheit');
+  if (fahrenheitButton) {
+    fahrenheitButton.addEventListener('click', convertToFahrenheit);
+  }
+});
 
 function formatDate(date) {
 
