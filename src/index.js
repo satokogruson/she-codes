@@ -45,36 +45,6 @@ function displayWeather(response) {
   windSpeedElement.innerHTML = `${response.data.wind.speed} km/h`;
   weatherConditionElement.innerHTML = response.data.condition.description;
   currentDateElement.innerHTML = formatDate(date);
-
-}
-function convertForecastToFahrenheit() {
-  document.querySelectorAll(".weather-forecast-temperature-max, .weather-forecast-temperature-min").forEach((elem, index) => {
-    let isMax = elem.classList.contains("weather-forecast-temperature-max");
-    let tempCelsius = isMax ? forecastTemperaturesCelsius[Math.floor(index / 2)].max : forecastTemperaturesCelsius[Math.floor(index / 2)].min;
-    let tempFahrenheit = Math.round((tempCelsius * 9 / 5) + 32);
-    elem.innerHTML = `<strong>${tempFahrenheit}°</strong>`;
-  });
-}
-
-function convertForecastToCelsius() {
-  document.querySelectorAll(".weather-forecast-temperature-max, .weather-forecast-temperature-min").forEach((elem, index) => {
-    let isMax = elem.classList.contains("weather-forecast-temperature-max");
-    let tempCelsius = isMax ? forecastTemperaturesCelsius[Math.floor(index / 2)].max : forecastTemperaturesCelsius[Math.floor(index / 2)].min;
-    elem.innerHTML = `<strong>${tempCelsius}°</strong>`;
-  });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  let searchForm = document.querySelector("#search-form");
-  searchForm.addEventListener("submit", search);
-});
-
-function loadDefaultCityWeather(defaultCity) {
-  let apiKey = "10b545o25teaa28dd38fd076fc778f2c";
-  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${defaultCity}&key=${apiKey}&units=metric`;
-  axios.get(apiUrl).then(displayWeather).catch(error => {
-    console.error("Failed to fetch weather data:", error);
-  });
 }
 
 function search(event) {
@@ -121,6 +91,36 @@ function formatDate(date) {
   return `${dayOfWeek}, ${monthNames[month]} ${day}, ${year} ${hours}:${minutes}`;
 
 }
+function convertForecastToFahrenheit() {
+  document.querySelectorAll(".weather-forecast-temperature-max, .weather-forecast-temperature-min").forEach((elem, index) => {
+    let isMax = elem.classList.contains("weather-forecast-temperature-max");
+    let tempCelsius = isMax ? forecastTemperaturesCelsius[Math.floor(index / 2)].max : forecastTemperaturesCelsius[Math.floor(index / 2)].min;
+    let tempFahrenheit = Math.round((tempCelsius * 9 / 5) + 32);
+    elem.innerHTML = `<strong>${tempFahrenheit}°</strong>`;
+  });
+}
+
+function convertForecastToCelsius() {
+  document.querySelectorAll(".weather-forecast-temperature-max, .weather-forecast-temperature-min").forEach((elem, index) => {
+    let isMax = elem.classList.contains("weather-forecast-temperature-max");
+    let tempCelsius = isMax ? forecastTemperaturesCelsius[Math.floor(index / 2)].max : forecastTemperaturesCelsius[Math.floor(index / 2)].min;
+    elem.innerHTML = `<strong>${tempCelsius}°</strong>`;
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  let searchForm = document.querySelector("#search-form");
+  searchForm.addEventListener("submit", search);
+});
+
+function loadDefaultCityWeather(defaultCity) {
+  let apiKey = "10b545o25teaa28dd38fd076fc778f2c";
+  let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${defaultCity}&key=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayWeather).catch(error => {
+    console.error("Failed to fetch weather data:", error);
+  });
+}
+
 
 function formatShortDate(time) {
   let date = new Date(time * 1000);
@@ -134,7 +134,6 @@ function getForecast(city) {
   axios(apiUrl).then(displayForecast);
 }
 
-
 function displayForecast(response) {
   console.log(response.data);
 
@@ -147,7 +146,7 @@ function displayForecast(response) {
   response.data.daily.forEach(function (day, index) {
     if (index > 0 && index < 6) {
       forecastHtml = forecastHtml +
-        `<div class="container text-center">
+        `<div class="container text-center" id="weather-card">
               <div class="col">
                 <div class="weather-forecast-date">${formatShortDate(day.time)}</div>
                 <img

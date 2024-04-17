@@ -1,20 +1,24 @@
-body  {
+body {
   font-family: "Roboto", sans-serif;
   background-color: #e8f6fc;
 }
 
-a{
-  color: rgb(250, 200, 0, 0.7);
-}
-p {
-  color: #cbeafa;
-}
-span {
-    color: #eaf5fa;
+a {
+  color: rgb(250, 200, 0, 0.9);
 }
 
-.weather-container  {
-background: linear-gradient(65.5deg, rgb(23, 205, 205) -15.1%, rgb(23, 25, 95) 71.5%);
+p,
+h1 {
+  color: #edf7fc;
+}
+
+span {
+  color: #ecf5f9;
+}
+
+.weather-container {
+  background-image: url('./img/Blue_BG.jpg');
+  background-size: cover;
   width: 40%;
   margin: 60px auto;
   padding: 30px;
@@ -23,7 +27,7 @@ background: linear-gradient(65.5deg, rgb(23, 205, 205) -15.1%, rgb(23, 25, 95) 7
 }
 
 header {
-  border-bottom: 1px solid #eaf7fe;
+  border-bottom: 1px solid rgba(255, 255, 255, .25);
   padding: 30px;
 }
 
@@ -35,7 +39,7 @@ header {
 }
 
 #search-input {
-  background-color: #c9e1ed;
+  background-color: rgb(250, 254, 255);
   border: none;
   color: rgba(39, 33, 66, 0.4);
   font-size: 16px;
@@ -82,26 +86,26 @@ main {
 }
 
 #convert-to-celsius {
-  border-right: 1px solid #eaf7fe;
+  border-right: 1px solid rgba(255, 255, 255, .25);
 }
 
 
 #convert-to-celsius:not(:disabled) {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 #convert-to-celsius:disabled {
   font-weight: bold;
-  color: #c2fffc;
+  color: #fcc800;
 }
 
 #convert-to-fahrenheit:not(:disabled) {
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 #convert-to-fahrenheit:disabled {
   font-weight: bold;
-  color: #c2fffc
+  color: #fcc800;
 }
 
 .current-temperature {
@@ -129,18 +133,18 @@ main {
 
 .weather-condition,
 .current-details {
-  color: rgb(235, 245, 250,0.7);
+  color: rgb(235, 245, 250, 0.7);
   font-size: 16px;
   font-weight: 400;
   line-height: 24px;
 }
 
 .current-details strong {
-  color: #f65282;
+  color: #E7609E;
 }
 
 .weather-condition strong {
-  color: #007bbb;
+  color: #ffdb4f;
 }
 
 .current-temperature-icon {
@@ -149,15 +153,15 @@ main {
   margin-right: 10px;
 }
 
-.container {
+#weather-card {
   width: 80%;
-  border: #f1faff solid 0.5px;
-  background-color: #fbfeff;
+  border: 1px solid rgba(255, 255, 255, .25);
+  background-color: rgba(255, 255, 255, 0.35);
   margin: 5px;
   padding: 10px 0;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
-
+  backdrop-filter: blur(15px);
 }
 
 .current-temperature-value {
@@ -203,7 +207,7 @@ main {
 }
 
 footer {
-  border-top: 1px solid #eaf7fe;
+  border-top: 1px solid rgba(255, 255, 255, .25);
   text-align: center;
   padding-top: 15px;
   color: rgba(39, 33, 66, 0.4);
