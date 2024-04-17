@@ -2,7 +2,7 @@ function displayWeather(response) {
   let temperatureElement = document.querySelector("#current-temperature");
   let feelsLikeElement = document.querySelector("#feels-like");
   currentTemperatureCelsius = Math.round(response.data.temperature.current);
-  feelsLikeCelsius = Math.round(response.data.temperature.feels_like); 
+  feelsLikeCelsius = Math.round(response.data.temperature.feels_like);
   temperatureElement.innerHTML = `${currentTemperatureCelsius}`;
   feelsLikeElement.innerHTML = `${feelsLikeCelsius}°`;
   toggleButtons(true);
@@ -172,12 +172,12 @@ function displayForecast(response) {
         `<div class="container text-center" id="weather-card">
               <div class="col">
                 <div class="weather-forecast-date">${formatShortDate(day.time)}</div>
-                <img
-                  class="weather-icon"
-                  id="weather-icon"
-                  srcset="
+                <img src="
                  ${day.condition.icon_url}
                   "
+                  class="weather-icon"
+                  id="weather-icon"
+
                   alt="sml weather-icon"
                 />
                 <div class="weather-forecast-temperature">
