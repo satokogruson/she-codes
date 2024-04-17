@@ -1,8 +1,36 @@
+function displayWeather(response) {
+  let temperatureElement = document.querySelector("#current-temperature");
+  let feelsLikeElement = document.querySelector("#feels-like");
+  currentTemperatureCelsius = Math.round(response.data.temperature.current);
+  feelsLikeCelsius = Math.round(response.data.temperature.feels_like); 
+  temperatureElement.innerHTML = `${currentTemperatureCelsius}`;
+  feelsLikeElement.innerHTML = `${feelsLikeCelsius}°`;
+  toggleButtons(true);
+
+  let cityElement = document.querySelector("#current-city");
+  let weatherIconElement = document.querySelector("#weather-icon");
+  let humidityElement = document.querySelector("#humidity");
+  let windSpeedElement = document.querySelector("#wind-speed");
+  let weatherConditionElement = document.querySelector("#weather-condition");
+  let currentDateElement = document.querySelector("#current-date");
+  let date = new Date(response.data.time * 1000);
+
+
+  cityElement.innerHTML = response.data.city;
+  weatherIconElement.src = response.data.condition.icon_url;
+  weatherIconElement.alt = response.data.condition.description;
+  humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
+  windSpeedElement.innerHTML = `${response.data.wind.speed} km/h`;
+  weatherConditionElement.innerHTML = response.data.condition.description;
+  currentDateElement.innerHTML = formatDate(date);
+  feelsLikeElement.innerHTML = `${Math.round(response.data.temperature.feels_like)}°`;
+}
 function convertToCelsius() {
   if (currentTemperatureCelsius !== null) {
     let temperatureElement = document.querySelector("#current-temperature");
     temperatureElement.innerHTML = `${currentTemperatureCelsius}`;
     convertForecastToCelsius();
+    convertFeelsLikeToCelsius();
     toggleButtons(true);
   }
 }
@@ -14,7 +42,22 @@ function convertToFahrenheit() {
   let fahrenheit = Math.round((temperature * 9 / 5) + 32);
   temperatureElement.innerHTML = `${fahrenheit}`;
   convertForecastToFahrenheit();
+  convertFeelsLikeToFahrenheit();
   toggleButtons(false);
+}
+
+function convertFeelsLikeToCelsius() {
+  if (feelsLikeCelsius !== null) {
+    let feelsLikeElement = document.querySelector('#feels-like');
+    feelsLikeElement.innerHTML = `${feelsLikeCelsius}°`;
+  }
+
+}
+function convertFeelsLikeToFahrenheit() {
+  let feelsLikeElement = document.querySelector("#feels-like");
+  let feelsLike = parseInt(feelsLikeElement.innerHTML, 10);
+  let feelsLikeFahrenheit = Math.round((feelsLike * 9 / 5) + 32);
+  feelsLikeElement.innerHTML = `${feelsLikeFahrenheit}°`;
 }
 
 function toggleButtons(isCelsius) {
@@ -24,28 +67,6 @@ function toggleButtons(isCelsius) {
   fahrenheitButton.disabled = !isCelsius;
 }
 
-function displayWeather(response) {
-  let temperatureElement = document.querySelector("#current-temperature");
-  currentTemperatureCelsius = Math.round(response.data.temperature.current);
-  temperatureElement.innerHTML = `${currentTemperatureCelsius}`;
-  toggleButtons(true);
-
-  let cityElement = document.querySelector("#current-city");
-  let weatherIconElement = document.querySelector("#weather-icon");
-  let humidityElement = document.querySelector("#humidity");
-  let windSpeedElement = document.querySelector("#wind-speed");
-  let weatherConditionElement = document.querySelector("#weather-condition");
-  let currentDateElement = document.querySelector("#current-date");
-  let date = new Date(response.data.time * 1000);
-
-  cityElement.innerHTML = response.data.city;
-  weatherIconElement.src = response.data.condition.icon_url;
-  weatherIconElement.alt = response.data.condition.description;
-  humidityElement.innerHTML = `${response.data.temperature.humidity}%`;
-  windSpeedElement.innerHTML = `${response.data.wind.speed} km/h`;
-  weatherConditionElement.innerHTML = response.data.condition.description;
-  currentDateElement.innerHTML = formatDate(date);
-}
 
 function search(event) {
   event.preventDefault();
@@ -91,6 +112,7 @@ function formatDate(date) {
   return `${dayOfWeek}, ${monthNames[month]} ${day}, ${year} ${hours}:${minutes}`;
 
 }
+
 function convertForecastToFahrenheit() {
   document.querySelectorAll(".weather-forecast-temperature-max, .weather-forecast-temperature-min").forEach((elem, index) => {
     let isMax = elem.classList.contains("weather-forecast-temperature-max");
@@ -107,6 +129,7 @@ function convertForecastToCelsius() {
     elem.innerHTML = `<strong>${tempCelsius}°</strong>`;
   });
 }
+
 
 document.addEventListener('DOMContentLoaded', function () {
   let searchForm = document.querySelector("#search-form");
