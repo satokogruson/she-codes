@@ -63,7 +63,7 @@ header {
 }
 
 main {
-  padding: 30px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -130,7 +130,7 @@ main {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px;
+  padding: 10px 30px;
 }
 
 .current-city {
