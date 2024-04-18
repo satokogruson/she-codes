@@ -93,11 +93,17 @@ document.addEventListener('DOMContentLoaded', function () {
   searchForm.addEventListener("submit", search);
 });
 document.addEventListener('DOMContentLoaded', function () {
+  var celsiusButton = document.getElementById('convert-to-celsius');
   var fahrenheitButton = document.getElementById('convert-to-fahrenheit');
+
+  if (celsiusButton) {
+    celsiusButton.addEventListener('click', convertToCelsius);
+  }
   if (fahrenheitButton) {
     fahrenheitButton.addEventListener('click', convertToFahrenheit);
   }
 });
+
 
 function formatDate(date) {
 
