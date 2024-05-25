@@ -20,7 +20,7 @@ span {
 .weather-container {
   background-image: url('./img/Blue_BG.png');
   background-size: cover;
-  width: 40%;
+  width: 50%;
   margin: 60px auto;
   padding: 30px;
   border-radius: 10px;
