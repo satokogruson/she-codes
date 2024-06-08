@@ -1,6 +1,7 @@
 body {
   font-family: "Roboto", sans-serif;
-  background-color: #e8f6fc;
+  background-image: url(./img/clouds_BG.jpeg);
+  background-size: cover;
 }
 
 a {
